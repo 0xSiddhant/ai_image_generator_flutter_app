@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:ai_image_generator_app/home_repo.dart';
 import 'package:ai_image_generator_app/widgets/prompt_box.dart';
 import 'package:flutter/material.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -34,9 +35,9 @@ class _HomePageState extends State<HomePage> {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return const Center(
-                              child: CircularProgressIndicator.adaptive(
-                                strokeWidth: 10,
+                            return Center(
+                              child: CircularProgressIndicator(
+                                color: Theme.of(context).primaryColor,
                               ),
                             );
                           } else if (snapshot.hasError) {
@@ -44,7 +45,11 @@ class _HomePageState extends State<HomePage> {
                                 const SnackBar(
                                     content: Text("Something went wrong")));
                           } else if (snapshot.hasData) {
-                            return Image.memory(snapshot.data!);
+                            return GestureDetector(
+                                onLongPress: () {
+                                  _saveImageLocally(snapshot.data!, context);
+                                },
+                                child: Image.memory(snapshot.data!));
                           }
                           return Container();
                         },
@@ -63,5 +68,13 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  _saveImageLocally(Uint8List imageData, BuildContext myContext) async {
+    final result = await ImageGallerySaver.saveImage(imageData, quality: 80);
+    if (result["isSuccess"] == true) {
+      ScaffoldMessenger.of(myContext).showSnackBar(
+          const SnackBar(content: Text("Image Saved in Gallery")));
+    }
   }
 }

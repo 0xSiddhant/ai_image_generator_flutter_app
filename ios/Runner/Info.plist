@@ -45,5 +45,7 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>${APP_NAME} needs access to your photo library to allow you to save the generated image.</string>
 </dict>
 </plist>

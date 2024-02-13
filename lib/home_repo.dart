@@ -14,7 +14,7 @@ class HomeRepo {
       Map<String, dynamic> payload = {
         'prompt': prompt,
         'style_id': '34',
-        'aspect_ratio': '16:9',
+        'aspect_ratio': '9:16',
         'cfg': '5',
         'seed': '1',
         'high_res_results': '0'
